@@ -1,0 +1,14 @@
+syntax = "proto3";
+package cosmonaut.opctcoin.dex;
+
+option go_package = "github.com/cosmonaut/opctcoin/x/dex/types";
+
+
+
+message SellOrderBook {
+  string index = 1; 
+  string amountDenom = 2; 
+  string priceDenom = 3; 
+  
+}
+
