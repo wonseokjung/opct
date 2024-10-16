@@ -339,7 +339,7 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 		panic(err)
 	}
 
-	docs.RegisterOpenAPIService(Name, apiSvr.Router)
+	docs.RegisterOpenAPIService(Name, apiSvr.Router)git commit -m "Initial commit"
 }
 
 func GetMaccPerms() map[string][]string {
