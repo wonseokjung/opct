@@ -3,20 +3,20 @@ package app
 import (
 	"io"
 
-	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
+	_ "cosmossdk.io/api/cosmos/tx/config/v1"
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	storetypes "cosmossdk.io/store/types"
-	_ "cosmossdk.io/x/circuit" // import for side-effects
+	_ "cosmossdk.io/x/circuit"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
-	_ "cosmossdk.io/x/evidence" // import for side-effects
+	_ "cosmossdk.io/x/evidence"
 	evidencekeeper "cosmossdk.io/x/evidence/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
-	_ "cosmossdk.io/x/feegrant/module" // import for side-effects
+	_ "cosmossdk.io/x/feegrant/module"
 	nftkeeper "cosmossdk.io/x/nft/keeper"
-	_ "cosmossdk.io/x/nft/module" // import for side-effects
-	_ "cosmossdk.io/x/upgrade"    // import for side-effects
+	_ "cosmossdk.io/x/nft/module"
+	_ "cosmossdk.io/x/upgrade"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	abci "github.com/cometbft/cometbft/abci/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -34,18 +34,19 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
-	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	_ "github.com/cosmos/cosmos-sdk/x/auth/vesting" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/auth/vesting"
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/authz/module" // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/bank"         // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/authz/module"
+	_ "github.com/cosmos/cosmos-sdk/x/bank"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/consensus" // import for side-effects
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	_ "github.com/cosmos/cosmos-sdk/x/consensus"
 	consensuskeeper "github.com/cosmos/cosmos-sdk/x/consensus/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/crisis" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/crisis"
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/distribution" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/distribution"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
@@ -54,40 +55,38 @@ import (
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/group/module" // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/mint"         // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/group/module"
+	_ "github.com/cosmos/cosmos-sdk/x/mint"
 	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/params" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	_ "github.com/cosmos/cosmos-sdk/x/slashing" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/slashing"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
-	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/staking"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
+	_ "github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
+	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
+	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
-	opctmodulekeeper "opct/x/opct/keeper"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
-
-	"opct/docs"
+	"github.com/wonseokjung/opct/docs"
 )
 
 const (
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "opct"
 	Name                 = "opct"
+	BondDenom            = "uopct"
+	DisplayDenom         = "OPCT"
 )
 
 var (
-	// DefaultNodeHome default home directories for the application daemon
 	DefaultNodeHome string
 )
 
@@ -96,9 +95,6 @@ var (
 	_ servertypes.Application = (*App)(nil)
 )
 
-// App extends an ABCI application, but with most of its parameters exported.
-// They are exported for convenience in creating helper functions, as object
-// capabilities aren't needed for testing.
 type App struct {
 	*runtime.App
 	legacyAmino       *codec.LegacyAmino
@@ -127,7 +123,7 @@ type App struct {
 	CircuitBreakerKeeper circuitkeeper.Keeper
 
 	// IBC
-	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
+	IBCKeeper           *ibckeeper.Keeper
 	CapabilityKeeper    *capabilitykeeper.Keeper
 	IBCFeeKeeper        ibcfeekeeper.Keeper
 	ICAControllerKeeper icacontrollerkeeper.Keeper
@@ -141,9 +137,6 @@ type App struct {
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
 	ScopedKeepers             map[string]capabilitykeeper.ScopedKeeper
 
-	OpctKeeper opctmodulekeeper.Keeper
-	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
-
 	// simulation manager
 	sm *module.SimulationManager
 }
@@ -155,39 +148,32 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	// OPCT 코인 등록
+	sdk.RegisterDenom(BondDenom, sdk.OneDec())
+	sdk.RegisterDenom(DisplayDenom, sdk.NewDecWithPrec(1, 6)) // 1 OPCT = 1,000,000 uopct
 }
 
-// getGovProposalHandlers return the chain proposal handlers.
 func getGovProposalHandlers() []govclient.ProposalHandler {
 	var govProposalHandlers []govclient.ProposalHandler
-	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
-
 	govProposalHandlers = append(govProposalHandlers,
 		paramsclient.ProposalHandler,
-		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
-
 	return govProposalHandlers
 }
 
-// AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
 		appConfig,
-		// Alternatively, load the app config from a YAML file.
-		// appconfig.LoadYAML(AppConfigYAML),
 		depinject.Supply(
-			// supply custom module basics
 			map[string]module.AppModuleBasic{
 				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 				govtypes.ModuleName:     gov.NewAppModuleBasic(getGovProposalHandlers()),
-				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
 		),
 	)
 }
 
-// New returns a reference to an initialized App.
 func New(
 	logger log.Logger,
 	db dbm.DB,
@@ -200,24 +186,13 @@ func New(
 		app        = &App{ScopedKeepers: make(map[string]capabilitykeeper.ScopedKeeper)}
 		appBuilder *runtime.AppBuilder
 
-		// merge the AppConfig and other configuration in one config
 		appConfig = depinject.Configs(
 			AppConfig(),
 			depinject.Supply(
-				appOpts, // supply app options
-				logger,  // supply logger
-				// Supply with IBC keeper getter for the IBC modules with App Wiring.
-				// The IBC Keeper cannot be passed because it has not been initiated yet.
-				// Passing the getter, the app IBC Keeper will always be accessible.
-				// This needs to be removed after IBC supports App Wiring.
+				appOpts,
+				logger,
 				app.GetIBCKeeper,
 				app.GetCapabilityScopedKeeper,
-
-				// here alternative options can be supplied to the DI container.
-				// those options can be used f.e to override the default behavior of some modules.
-				// for instance supplying a custom address codec for not using bech32 addresses.
-				// read the depinject documentation and depinject module wiring for more information
-				// on available options and how to use them.
 			),
 		)
 	)
@@ -245,44 +220,41 @@ func New(
 		&app.NFTKeeper,
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
-		&app.OpctKeeper,
-		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
 	}
 
-	// add to default baseapp options
-	// enable optimistic execution
+	// OPCT 코인 설정
+	ctx := app.BaseApp.NewUncachedContext(true, abci.Header{})
+	if err := app.BankKeeper.SetParams(ctx, banktypes.Params{
+		SendEnabled: []*banktypes.SendEnabled{
+			{Denom: BondDenom, Enabled: true},
+		},
+		DefaultSendEnabled: true,
+	}); err != nil {
+		return nil, err
+	}
+
 	baseAppOptions = append(baseAppOptions, baseapp.SetOptimisticExecution())
 
-	// build app
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
-	// register legacy modules
 	if err := app.registerIBCModules(appOpts); err != nil {
 		return nil, err
 	}
 
-	// register streaming services
 	if err := app.RegisterStreamingServices(appOpts, app.kvStoreKeys()); err != nil {
 		return nil, err
 	}
 
-	/****  Module Options ****/
-
 	app.ModuleManager.RegisterInvariants(app.CrisisKeeper)
 
-	// create the simulation manager and define the order of the modules for deterministic simulations
 	overrideModules := map[string]module.AppModuleSimulation{
 		authtypes.ModuleName: auth.NewAppModule(app.appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts, app.GetSubspace(authtypes.ModuleName)),
 	}
 	app.sm = module.NewSimulationManagerFromAppModules(app.ModuleManager.Modules, overrideModules)
 	app.sm.RegisterStoreDecoders()
 
-	// A custom InitChainer sets if extra pre-init-genesis logic is required.
-	// This is necessary for manually registered modules that do not support app wiring.
-	// Manually set the module version map as shown below.
-	// The upgrade module will automatically handle de-duplication of the module version map.
 	app.SetInitChainer(func(ctx sdk.Context, req *abci.RequestInitChain) (*abci.ResponseInitChain, error) {
 		if err := app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap()); err != nil {
 			return nil, err
@@ -297,33 +269,22 @@ func New(
 	return app, nil
 }
 
-// LegacyAmino returns App's amino codec.
-//
-// NOTE: This is solely to be used for testing purposes as it may be desirable
-// for modules to register their own custom testing types.
 func (app *App) LegacyAmino() *codec.LegacyAmino {
 	return app.legacyAmino
 }
 
-// AppCodec returns App's app codec.
-//
-// NOTE: This is solely to be used for testing purposes as it may be desirable
-// for modules to register their own custom testing types.
 func (app *App) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
-// InterfaceRegistry returns App's interfaceRegistry.
 func (app *App) InterfaceRegistry() codectypes.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
-// TxConfig returns App's tx config.
 func (app *App) TxConfig() client.TxConfig {
 	return app.txConfig
 }
 
-// GetKey returns the KVStoreKey for the provided store key.
 func (app *App) GetKey(storeKey string) *storetypes.KVStoreKey {
 	kvStoreKey, ok := app.UnsafeFindStoreKey(storeKey).(*storetypes.KVStoreKey)
 	if !ok {
@@ -332,17 +293,14 @@ func (app *App) GetKey(storeKey string) *storetypes.KVStoreKey {
 	return kvStoreKey
 }
 
-// GetMemKey returns the MemoryStoreKey for the provided store key.
 func (app *App) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	key, ok := app.UnsafeFindStoreKey(storeKey).(*storetypes.MemoryStoreKey)
 	if !ok {
 		return nil
 	}
-
 	return key
 }
 
-// kvStoreKeys returns all the kv store keys registered inside App.
 func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
 	keys := make(map[string]*storetypes.KVStoreKey)
 	for _, k := range app.GetStoreKeys() {
@@ -350,22 +308,18 @@ func (app *App) kvStoreKeys() map[string]*storetypes.KVStoreKey {
 			keys[kv.Name()] = kv
 		}
 	}
-
 	return keys
 }
 
-// GetSubspace returns a param subspace for a given module name.
 func (app *App) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
-// GetIBCKeeper returns the IBC keeper.
 func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
 	return app.IBCKeeper
 }
 
-// GetCapabilityScopedKeeper returns the capability scoped keeper.
 func (app *App) GetCapabilityScopedKeeper(moduleName string) capabilitykeeper.ScopedKeeper {
 	sk, ok := app.ScopedKeepers[moduleName]
 	if !ok {
@@ -375,27 +329,19 @@ func (app *App) GetCapabilityScopedKeeper(moduleName string) capabilitykeeper.Sc
 	return sk
 }
 
-// SimulationManager implements the SimulationApp interface.
 func (app *App) SimulationManager() *module.SimulationManager {
 	return app.sm
 }
 
-// RegisterAPIRoutes registers all application module routes with the provided
-// API server.
 func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	app.App.RegisterAPIRoutes(apiSvr, apiConfig)
-	// register swagger API in app.go so that other applications can override easily
 	if err := server.RegisterSwaggerAPI(apiSvr.ClientCtx, apiSvr.Router, apiConfig.Swagger); err != nil {
 		panic(err)
 	}
 
-	// register app's OpenAPI routes.
 	docs.RegisterOpenAPIService(Name, apiSvr.Router)
 }
 
-// GetMaccPerms returns a copy of the module account permissions
-//
-// NOTE: This is solely to be used for testing purposes.
 func GetMaccPerms() map[string][]string {
 	dup := make(map[string][]string)
 	for _, perms := range moduleAccPerms {
@@ -404,7 +350,6 @@ func GetMaccPerms() map[string][]string {
 	return dup
 }
 
-// BlockedAddresses returns all the app's blocked account addresses.
 func BlockedAddresses() map[string]bool {
 	result := make(map[string]bool)
 	if len(blockAccAddrs) > 0 {
